@@ -1,5 +1,6 @@
-import { resolve, basename } from "path";
-import { access, mkdir, writeFile, readFile } from "fs/promises";
+import { resolve } from "path";
+import { existsSync, writeFileSync, mkdirSync } from "fs";
+import { writeFile, readFile } from "fs/promises";
 
 export const getFileContent = async (path, filename) => {
   const pathToFile = resolve(path, `${filename}.json`);
@@ -23,28 +24,40 @@ export const setFileContent = async (path, filename, content) => {
   }
 };
 
-export const initializeDirectory = async (path) => {
-  const pathToDir = resolve(path);
-  const dirName = basename(pathToDir);
-
-  try {
-    await access(pathToDir);
-    console.log(`Directory [${dirName}] already exist`);
-  } catch (err) {
-    await mkdir(pathToDir);
-    console.log(`Directory [${dirName}] was created`);
-  }
-};
-
-export const initializeFile = async (pathToDir, file, ext) => {
+export const initializeFileSync = (path, file, ext) => {
   const fileName = `${file}.${ext}`;
-  const filePath = resolve(pathToDir, fileName);
+  const filePath = resolve(path, fileName);
 
-  try {
-    await access(filePath);
-    console.log(`File [${fileName}] already exist`);
-  } catch (err) {
-    await writeFile(filePath, "[]");
-    console.log(`File [${fileName}] was created`);
+  if (!existsSync(filePath)) {
+    writeFileSync(filePath, "[]");
   }
 };
+
+export const initializeDirectorySync = (path) => {
+  const pathToDir = resolve(path);
+
+  if (!existsSync(pathToDir)) {
+    mkdirSync(pathToDir);
+  }
+};
+
+// export const initializeDirectory = async (path) => {
+//   const pathToDir = resolve(path);
+
+//   try {
+//     await access(pathToDir);
+//   } catch (err) {
+//     await mkdir(pathToDir);
+//   }
+// };
+
+// export const initializeFile = async (path, file, ext) => {
+//   const fileName = `${file}.${ext}`;
+//   const filePath = resolve(path, fileName);
+
+//   try {
+//     await access(filePath);
+//   } catch (err) {
+//     await writeFile(filePath, "[]");
+//   }
+// };

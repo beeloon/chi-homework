@@ -3,8 +3,8 @@ import { v4 as uuidv4 } from "uuid";
 import {
   getFileContent,
   setFileContent,
-  initializeFile,
-  initializeDirectory,
+  initializeFileSync,
+  initializeDirectorySync,
 } from "./Utils.js";
 
 export default class FileAdapter {
@@ -12,9 +12,9 @@ export default class FileAdapter {
     this.path = path;
     this.files = files;
 
-    initializeDirectory(this.path);
+    initializeDirectorySync(this.path);
     for (let file of this.files) {
-      initializeFile(this.path, file, "json");
+      initializeFileSync(this.path, file, "json");
     }
   }
 
@@ -24,11 +24,13 @@ export default class FileAdapter {
 
     const newEntity = { id, ...data };
 
-    setFileContent(
+    await setFileContent(
       this.path,
       file,
       JSON.stringify([...fileContent, newEntity])
     );
+
+    return newEntity;
   }
 
   async get(file, id) {
@@ -51,13 +53,13 @@ export default class FileAdapter {
       return entity;
     });
 
-    setFileContent(this.path, file, JSON.stringify(newContent));
+    await setFileContent(this.path, file, JSON.stringify(newContent));
   }
 
   async delete(file, id) {
     const fileContent = await getFileContent(this.path, file);
     const newContent = fileContent.filter((entity) => entity.id !== id);
 
-    setFileContent(this.path, file, JSON.stringify(newContent));
+    await setFileContent(this.path, file, JSON.stringify(newContent));
   }
 }

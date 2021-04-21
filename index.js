@@ -5,16 +5,17 @@ const path = process.env.DATA_FOLDER_PATH;
 const adapter = new FileAdapter(path, "users", "posts");
 
 // create
-adapter.create("users", { name: "Ivan", age: 17 });
+const user = await adapter.create("users", { name: "Dmitry", age: 28 });
+const user2 = await adapter.create("users", { name: "Dmitry", age: 28 });
 
 // get
-const user = await adapter.get("users", "1bf41c4b-2c81-4090-93a9-f1cda2e83487");
-console.log(user);
+console.log(await adapter.get("users", user.id));
 
 // update
-adapter.update("users", "9aad82cf-427d-4118-addd-5f28afc991a1", {
-  name: "Anastasia",
+await adapter.update("users", user.id, {
+  name: "Oleg",
+  age: 25,
 });
 
 // delete
-adapter.delete("users", "1bf41c4b-2c81-4090-93a9-f1cda2e83487");
+await adapter.delete("users", user2.id);
