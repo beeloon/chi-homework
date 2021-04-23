@@ -5,7 +5,7 @@ import {
   setFileContent,
   initializeFile,
   initializeDirectory,
-} from "../utils/asyncUtils.js";
+} from "../utils/index.js";
 
 export default class AsyncAdapter {
   constructor(path, ...files) {
@@ -37,6 +37,8 @@ export default class AsyncAdapter {
 
   async get(file, id) {
     const fileContent = await getFileContent(this.path, file);
+
+    if (id === null) return fileContent;
 
     return fileContent.find((entity) => entity.id === id);
   }
