@@ -1,5 +1,3 @@
-import { v4 as uuid } from "uuid";
-
 import {
   getFileContent,
   setFileContent,
@@ -7,7 +5,7 @@ import {
   initializeDirectory,
 } from "../utils/index.js";
 
-export default class AsyncAdapter {
+export default class DBFileManager {
   constructor(path, ...files) {
     this.path = path;
     this.files = files;
@@ -16,34 +14,35 @@ export default class AsyncAdapter {
   async init() {
     await initializeDirectory(this.path);
     for (let file of this.files) {
-      await initializeFile(this.path, file, "json");
+      await initializeFile(this.path, file);
     }
   }
 
-  async create(file, data) {
-    const id = uuid();
+  async addEntityToFile(file, entityData) {
     const fileContent = await getFileContent(this.path, file);
-
-    const newEntity = { id, ...data };
 
     await setFileContent(
       this.path,
       file,
-      JSON.stringify([...fileContent, newEntity])
+      JSON.stringify([...fileContent, entityData])
     );
 
     return newEntity;
   }
 
-  async get(file, id) {
+  async getEntityFromFileById(file, id) {
     const fileContent = await getFileContent(this.path, file);
-
-    if (id === null) return fileContent;
 
     return fileContent.find((entity) => entity.id === id);
   }
 
-  async update(file, id, newData) {
+  async getAllEntitiesFromFile(file) {
+    const fileContent = await getFileContent(this.path, file);
+
+    return fileContent;
+  }
+
+  async updateEntityById(file, id, newData) {
     const fileContent = await getFileContent(this.path, file);
 
     const newContent = fileContent.map((entity) => {
@@ -60,7 +59,7 @@ export default class AsyncAdapter {
     await setFileContent(this.path, file, JSON.stringify(newContent));
   }
 
-  async delete(file, id) {
+  async deleteEntityFromFile(file, id) {
     const fileContent = await getFileContent(this.path, file);
     const newContent = fileContent.filter((entity) => entity.id !== id);
 

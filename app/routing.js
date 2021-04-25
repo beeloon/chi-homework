@@ -3,11 +3,11 @@ import * as userController from "./modules/user/user.controller";
 
 const router = new Router();
 
-router.get("/users", userController.getAllUsers);
-router.get("/users:id", userController.getUser);
+router.post("/user", userController.signupUser);
 
-router.post("/users", userController.registerUser);
+router.get("/user", userController.listUsers);
+router.get("/user/:id", userController.getUser);
 
-router.put("/users/:id", userController.updateUser);
+router.patch("/user/:id", userController.updateUser);
 
-router.get("/users", userController.deleteUser);
+router.delete("/user/:id", userController.deleteUser);

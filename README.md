@@ -9,3 +9,18 @@
 ## Todo
  - Добавить deep clone при создании нового объекта
  - Обдумать измeнение обьекта через update
+
+
+### Пример стека вызова функций при создании юзера в бд:
+http.createServer(req, res) =>
+   router.handleRequest(req, res) =>
+   router.post('/users', userController.signupUser) =>
+   userController.signupUser(req, res) =>
+   userService.createUser(userData) =>
+   userModel.create(userData) => 
+   DBFileManager.addEntityToFile(entityData) =>
+   запись в базу
+
+## Вопросы:
+1. Где лучше задавать id-шники для сущностей (в DBFileManager или в Models).
+2. Где лучше проверяться инициализированы ли папка/файлы (в server.js или в Models)

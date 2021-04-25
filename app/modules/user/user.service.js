@@ -1,14 +1,19 @@
+import { v4 as uuid } from "uuid";
 import User from "./user.model.js";
 
-export const getUser = async (userId) => {
-  console.log(`GET /user with id: ${userId}`);
-  User.findOne(userId);
+export const createUser = async (userData) => {
+  console.log(`POST /user: ${userData.name}`);
+
+  const id = uuid();
+  const newUser = { ...userData, id };
+
+  await User.create(newUser);
 };
 
-// export const getAllUsers = async () => {};
+export const findUserById = async (userId) => {};
 
-// export const registerUser = async () => {};
+export const findAllUsers = async () => {};
 
-// export const updateUser = async () => {};
+export const updateUserById = async () => {};
 
-// export const deleteUser = async () => {};
+export const deleteUserById = async () => {};

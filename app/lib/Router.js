@@ -1,24 +1,23 @@
-import { getUserController } from "../modules/user/user.controller.js";
-
-const routes = [
-  {
-    url: "/users/:id",
-    handler: getUserController,
-  },
-];
-
 export default class Router {
   constructor() {
-    this.routes = routes;
+    this.routes = [];
   }
 
-  get(url, handler) {}
+  get(url, handler) {
+    this.routes.push({ url, handler, method: "GET" });
+  }
 
-  post(url, handler) {}
+  post(url, handler) {
+    this.routes.push({ url, handler, method: "POST" });
+  }
 
-  put(url, handler) {}
+  patch(url, handler) {
+    this.routes.push({ url, handler, method: "PATCH" });
+  }
 
-  delete(url, handler) {}
+  delete(url, handler) {
+    this.routes.push({ url, handler, method: "DELETE" });
+  }
 
   handleRequest(req, res) {
     const { url } = req;

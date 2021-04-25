@@ -1,19 +1,18 @@
 import * as userService from "./user.service.js";
 
-export const getUser = async (req, res) => {
-  // const { id } = req.params;
+export const signupUser = async (req, res) => {
   const mockUser = {
-    id: "test-id",
     name: "Test",
+    isAdmin: true,
   };
 
-  userService.getUser(mockUser.id);
+  await userService.createUser(mockUser);
 };
 
-// export const getAllUsers = async (req, res) => {};
+export const getUser = async (req, res) => {};
 
-// export const registerUser = async (req, res) => {};
+export const listUsers = async (req, res) => {};
 
-// export const updateUser = async (req, res) => {};
+export const updateUser = async (req, res) => {};
 
-// export const deleteUser = async (req, res) => {};
+export const deleteUser = async (req, res) => {};

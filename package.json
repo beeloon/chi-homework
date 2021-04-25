@@ -2,10 +2,10 @@
   "name": "chi_homework",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "type": "module",
   "scripts": {
-    "start": "node -r dotenv/config index.js"
+    "start": "node -r dotenv/config app/server.js"
   },
   "keywords": [],
   "author": "",

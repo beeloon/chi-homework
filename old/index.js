@@ -1,22 +1,22 @@
-import AsyncAdapter from "./lib/AsyncAdapter.js";
-import SyncAdapter from "./lib/SyncAdapter.js";
+// import AsyncAdapter from "./lib/AsyncAdapter.js";
+// import SyncAdapter from "./lib/SyncAdapter.js";
 
-const path = process.env.DATA_FOLDER_PATH;
+// const path = process.env.DATA_FOLDER_PATH;
 
 // SYNC STYLE
-const adapter = new SyncAdapter(path, "users", "posts");
+// const adapter = new SyncAdapter(path, "users", "posts");
 
-const user = adapter.create("users", { name: "Dmitry", age: 28 });
-const user2 = adapter.create("users", { name: "Dmitry", age: 28 });
+// const user = adapter.create("users", { name: "Dmitry", age: 28 });
+// const user2 = adapter.create("users", { name: "Dmitry", age: 28 });
 
-console.log(adapter.get("users", user.id));
+// console.log(adapter.get("users", user.id));
 
-adapter.update("users", user.id, {
-  name: "Oleg",
-  age: 25,
-});
+// adapter.update("users", user.id, {
+//   name: "Oleg",
+//   age: 25,
+// });
 
-adapter.delete("users", user2.id);
+// adapter.delete("users", user2.id);
 
 // ASYNC STYLE
 // const main = async () => {

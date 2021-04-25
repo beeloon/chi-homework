@@ -33,9 +33,8 @@ export const initializeDirectory = async (path) => {
   }
 };
 
-export const initializeFile = async (path, file, ext) => {
-  const fileName = `${file}.${ext}`;
-  const filePath = resolve(path, fileName);
+export const initializeFile = async (path, file) => {
+  const filePath = resolve(path, `${file}.json`);
 
   try {
     await access(filePath);
