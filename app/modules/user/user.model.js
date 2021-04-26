@@ -1,26 +1,29 @@
 import DBFileManager from "../../lib/DBFileManager.js";
 
 const path = process.env.DB_DATA_FOLDER_PATH;
-const dbManager = new DBFileManager(path, "users");
 
 export default class User {
-  static async create(userData) {
-    await dbManager.addEntityToFile("users", userData);
+  constructor() {
+    this.repository = new DBFileManager(path, "users");
   }
 
-  static async findOne(id) {
-    await dbManager.getEntityFromFileById("users", id);
+  async create(userData) {
+    await this.repository.addEntityToFile("users", userData);
   }
 
-  static async findAll() {
-    await dbManager.getAllEntitiesFromFile("users");
+  async findOne(id) {
+    await this.repository.getEntityFromFileById("users", id);
   }
 
-  static async updateOne(id, data) {
-    await dbManager.updateEntityById("users", id, data);
+  async findAll() {
+    await this.repository.getAllEntitiesFromFile("users");
   }
 
-  static async deleteOne(id) {
-    await dbManager.deleteEntityFromFile("users", id);
+  async updateOne(id, data) {
+    await this.repository.updateEntityById("users", id, data);
+  }
+
+  async deleteOne(id) {
+    await this.repository.deleteEntityFromFile("users", id);
   }
 }

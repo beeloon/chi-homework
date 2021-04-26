@@ -9,10 +9,27 @@ export const signupUser = async (req, res) => {
   await userService.createUser(mockUser);
 };
 
-export const getUser = async (req, res) => {};
+export const getUser = async (req, res) => {
+  const mockUser_id = "f1c158e9-db72-4c3c-8450-2ed79425ef9d";
 
-export const listUsers = async (req, res) => {};
+  await userService.findUserById(mockUser_id);
+};
 
-export const updateUser = async (req, res) => {};
+export const listUsers = async (req, res) => {
+  await userService.findAllUsers();
+};
 
-export const deleteUser = async (req, res) => {};
+export const updateUser = async (req, res) => {
+  const mockUser_id = "f1c158e9-db72-4c3c-8450-2ed79425ef9d";
+
+  await userService.updateUserById(mockUser_id, {
+    name: "Bohdan",
+    isAdmin: false,
+  });
+};
+
+export const deleteUser = async (req, res) => {
+  const mockUser_id = "f1c158e9-db72-4c3c-8450-2ed79425ef9d";
+
+  await userService.deleteUserById(mockUser_id);
+};
