@@ -1,6 +1,8 @@
+import routing from "../routing.js";
+
 export default class Router {
   constructor() {
-    this.routes = [];
+    this.routes = routing;
   }
 
   get(url, handler) {
@@ -20,7 +22,12 @@ export default class Router {
   }
 
   handleRequest(req, res) {
-    const { url } = req;
-    console.log(url);
+    const { url, method } = req;
+
+    const handler = this.routes.find(
+      (route) => route.pathname === url && route.method === method
+    );
+
+    console.log(handler);
   }
 }

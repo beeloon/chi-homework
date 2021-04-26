@@ -12,7 +12,7 @@
  - Добавить условия при которых удоляемого обьекта нет?
 
 
-### Пример стека вызова функций при создании юзера в бд:
+### Stack trace example when user creates in DB:
 ```
 http.createServer(req, res) =>
    router.handleRequest(req, res) =>
@@ -24,7 +24,7 @@ http.createServer(req, res) =>
    запись в базу
 ```
 
-## Вопросы:
+## Questions:
 
 1. Где лучше задавать id-шники для сущностей (в DBFileManager или в Models).
 2. Где лучше проверяться инициализированы ли папка/файлы (в server.js или в Models)

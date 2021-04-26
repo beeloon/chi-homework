@@ -7,7 +7,7 @@ const port = 5000;
 const router = new Router();
 
 const server = createServer((req, res) => {
-  // router.handleRequest(req, res);
+  router.handleRequest(req, res);
   res.end("API Server...");
 });
 
