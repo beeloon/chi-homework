@@ -1,4 +1,4 @@
-import * as userController from "./modules/user/user.controller";
+import * as userController from "./modules/user/user.controller.js";
 
 export const routing = [
   { method: "POST", pathname: "/user", handler: userController.signupUser },

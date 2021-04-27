@@ -2,43 +2,42 @@ import { resolve } from "path";
 import { writeFile, readFile, access, mkdir } from "fs/promises";
 
 export default class DBFileManager {
-  constructor(path, ...files) {
+  constructor(path, file) {
     this.path = path;
-    this.files = files;
+    this.file = file;
   }
 
-  async init() {
-    await this.initializeDirectory();
-    for (let file of this.files) {
-      await this.initializeFile(file);
-    }
-  }
-
-  async addEntityToFile(file, entityData) {
-    const fileContent = await this.getFileContent(file);
+  async addEntityToFile(entityData) {
+    const fileContent = await this.getFileContent(this.file);
 
     await this.setFileContent(
-      file,
+      this.file,
       JSON.stringify([...fileContent, entityData])
     );
 
     return entityData;
   }
 
-  async getEntityFromFileById(file, id) {
-    const fileContent = await this.getFileContent(file);
+  async getEntityFromFileById(id) {
+    const fileContent = await this.getFileContent(this.file);
 
-    return fileContent.find((entity) => entity.id === id);
+    const result = fileContent.find((entity) => entity.id === id);
+
+    if (result) {
+      return result;
+    } else {
+      throw new Error(`The entity with id ${id} doesn't exist.`);
+    }
   }
 
-  async getAllEntitiesFromFile(file) {
-    const fileContent = await this.getFileContent(file);
+  async getAllEntitiesFromFile() {
+    const fileContent = await this.getFileContent(this.file);
 
     return fileContent;
   }
 
-  async updateEntityById(file, id, newData) {
-    const fileContent = await this.getFileContent(file);
+  async updateEntityById(id, newData) {
+    const fileContent = await this.getFileContent(this.file);
 
     const newContent = fileContent.map((entity) => {
       if (entity.id === id) {
@@ -51,34 +50,16 @@ export default class DBFileManager {
       return entity;
     });
 
-    await this.setFileContent(file, JSON.stringify(newContent));
+    await this.setFileContent(this.file, JSON.stringify(newContent));
+
+    return { id, ...newData };
   }
 
-  async deleteEntityFromFile(file, id) {
-    const fileContent = await this.getFileContent(file);
+  async deleteEntityFromFile(id) {
+    const fileContent = await this.getFileContent(this.file);
     const newContent = fileContent.filter((entity) => entity.id !== id);
 
-    await this.setFileContent(file, JSON.stringify(newContent));
-  }
-
-  async initializeFile(file) {
-    const filePath = resolve(this.path, `${file}.json`);
-
-    try {
-      await access(filePath);
-    } catch (err) {
-      await writeFile(filePath, "[]");
-    }
-  }
-
-  async initializeDirectory() {
-    const pathToDir = resolve(this.path);
-
-    try {
-      await access(pathToDir);
-    } catch (err) {
-      await mkdir(pathToDir);
-    }
+    await this.setFileContent(this.file, JSON.stringify(newContent));
   }
 
   async getFileContent(filename) {
@@ -98,8 +79,35 @@ export default class DBFileManager {
 
     try {
       await writeFile(pathToFile, content);
+
+      return content;
     } catch (err) {
       throw new Error(err);
+    }
+  }
+
+  async init() {
+    await this.initializeDirectory();
+    await this.initializeFile();
+  }
+
+  async initializeFile(file) {
+    const filePath = resolve(this.path, `${this.file}.json`);
+
+    try {
+      await access(filePath);
+    } catch (err) {
+      await writeFile(filePath, "[]");
+    }
+  }
+
+  async initializeDirectory() {
+    const pathToDir = resolve(this.path);
+
+    try {
+      await access(pathToDir);
+    } catch (err) {
+      await mkdir(pathToDir);
     }
   }
 }

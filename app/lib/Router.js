@@ -1,4 +1,5 @@
-import routing from "../routing.js";
+import { routing } from "../routing.js";
+import { formatUrlPathname } from "../utils/index.js";
 
 export default class Router {
   constructor() {
@@ -21,13 +22,14 @@ export default class Router {
     this.routes.push({ url, handler, method: "DELETE" });
   }
 
-  handleRequest(req, res) {
+  async handleRequest(req, res) {
     const { url, method } = req;
 
-    const handler = this.routes.find(
-      (route) => route.pathname === url && route.method === method
+    const { handler } = this.routes.find(
+      (route) =>
+        route.pathname === formatUrlPathname(url) && route.method === method
     );
 
-    console.log(handler);
+    await handler(req, res);
   }
 }

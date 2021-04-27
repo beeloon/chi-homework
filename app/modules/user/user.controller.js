@@ -1,35 +1,72 @@
-import * as userService from "./user.service.js";
+import { STATUS_CODES } from "http";
+import { getIdParamFromUrl } from "../../utils/index.js";
+
+import { userService } from "./user.service.js";
 
 export const signupUser = async (req, res) => {
-  const mockUser = {
-    name: "Test",
-    isAdmin: true,
-  };
+  try {
+    let user = "";
 
-  await userService.createUser(mockUser);
+    await req.on("data", (chunk) => {
+      user += chunk;
+    });
+
+    await userService.createUser(JSON.parse(user));
+
+    res.end(STATUS_CODES[201]);
+  } catch (err) {
+    res.end(STATUS_CODES[404]);
+  }
 };
 
 export const getUser = async (req, res) => {
-  const mockUser_id = "f1c158e9-db72-4c3c-8450-2ed79425ef9d";
+  try {
+    const userId = getIdParamFromUrl(req.url);
+    const user = await userService.findUserById(userId);
 
-  await userService.findUserById(mockUser_id);
+    res.end(JSON.stringify(user));
+  } catch (err) {
+    res.end(STATUS_CODES[404]);
+  }
 };
 
 export const listUsers = async (req, res) => {
-  await userService.findAllUsers();
+  try {
+    const users = await userService.findAllUsers();
+
+    res.end(JSON.stringify(users));
+  } catch (err) {
+    res.end(STATUS_CODES[404]);
+  }
 };
 
 export const updateUser = async (req, res) => {
-  const mockUser_id = "f1c158e9-db72-4c3c-8450-2ed79425ef9d";
+  try {
+    const userId = getIdParamFromUrl(req.url);
+    let newUserData = "";
 
-  await userService.updateUserById(mockUser_id, {
-    name: "Bohdan",
-    isAdmin: false,
-  });
+    await req.on("data", (chunk) => {
+      newUserData += chunk;
+    });
+
+    const updatedUser = await userService.updateUserById(
+      userId,
+      JSON.parse(newUserData)
+    );
+
+    res.end(JSON.stringify(updatedUser));
+  } catch (err) {
+    res.end(STATUS_CODES[404]);
+  }
 };
 
 export const deleteUser = async (req, res) => {
-  const mockUser_id = "f1c158e9-db72-4c3c-8450-2ed79425ef9d";
+  try {
+    const userId = getIdParamFromUrl(req.url);
 
-  await userService.deleteUserById(mockUser_id);
+    await userService.deleteUserById(userId);
+    res.end(STATUS_CODES[200]);
+  } catch (err) {
+    res.end(STATUS_CODES[404]);
+  }
 };
