@@ -86,13 +86,17 @@ export default class DBFileManager {
     }
   }
 
-  async init() {
-    await this.initializeDirectory();
-    await this.initializeFile();
+  static async init(path, ...entities) {
+    await DBFileManager.initializeDirectory(path);
+    const fileNames = entities.map((entity) => entity.getDBName());
+
+    for (let file of fileNames) {
+      await DBFileManager.initializeFile(path, file);
+    }
   }
 
-  async initializeFile(file) {
-    const filePath = resolve(this.path, `${this.file}.json`);
+  static async initializeFile(path, file) {
+    const filePath = resolve(path, `${file}.json`);
 
     try {
       await access(filePath);
@@ -101,8 +105,8 @@ export default class DBFileManager {
     }
   }
 
-  async initializeDirectory() {
-    const pathToDir = resolve(this.path);
+  static async initializeDirectory(path) {
+    const pathToDir = resolve(path);
 
     try {
       await access(pathToDir);

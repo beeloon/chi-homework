@@ -1,5 +1,8 @@
 import { createServer } from "http";
 
+import DBFileManager from "./lib/DBFileManager.js";
+
+import { config } from "./lib/config.js";
 import { user } from "./modules/user/user.model.js";
 
 import { router } from "./routing.js";
@@ -7,10 +10,10 @@ import { router } from "./routing.js";
 const hostname = "127.0.0.1";
 const port = 5000;
 
-const server = createServer(async (req, res) => {
-  user.init();
+DBFileManager.init(config.pathToDBFolder, user);
 
-  await router.handleRequest(req, res);
+const server = createServer((req, res) => {
+  router.handleRequest(req, res);
 });
 
 server.listen(port, hostname, () => {
