@@ -1,25 +1,24 @@
-import { routing } from "../routing.js";
 import { formatUrlPathname } from "../utils/index.js";
 
-export default class Router {
+class Router {
   constructor() {
-    this.routes = routing;
+    this.routes = [];
   }
 
-  get(url, handler) {
-    this.routes.push({ url, handler, method: "GET" });
+  get(pathname, handler) {
+    this.routes.push({ pathname, handler, method: "GET" });
   }
 
-  post(url, handler) {
-    this.routes.push({ url, handler, method: "POST" });
+  post(pathname, handler) {
+    this.routes.push({ pathname, handler, method: "POST" });
   }
 
-  patch(url, handler) {
-    this.routes.push({ url, handler, method: "PATCH" });
+  patch(pathname, handler) {
+    this.routes.push({ pathname, handler, method: "PATCH" });
   }
 
-  delete(url, handler) {
-    this.routes.push({ url, handler, method: "DELETE" });
+  delete(pathname, handler) {
+    this.routes.push({ pathname, handler, method: "DELETE" });
   }
 
   async handleRequest(req, res) {
@@ -33,3 +32,5 @@ export default class Router {
     await handler(req, res);
   }
 }
+
+export const router = new Router();
