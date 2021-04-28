@@ -2,8 +2,14 @@ import { config } from "../../lib/config.js";
 import DBFileManager from "../../lib/DBFileManager.js";
 
 class User {
+  #DBName = "users";
+
   constructor() {
-    this.repository = new DBFileManager(config.pathToDBFolder, "users");
+    this.repository = new DBFileManager(config.pathToDBFolder, this.#DBName);
+  }
+
+  getDBName() {
+    return this.#DBName;
   }
 
   async init() {

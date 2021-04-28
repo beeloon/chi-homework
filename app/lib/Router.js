@@ -24,12 +24,16 @@ class Router {
   async handleRequest(req, res) {
     const { url, method } = req;
 
-    const { handler } = this.routes.find(
+    const route = this.routes.find(
       (route) =>
         route.pathname === formatUrlPathname(url) && route.method === method
     );
 
-    await handler(req, res);
+    if (route) {
+      await route.handler(req, res);
+    } else {
+      res.end("Not Found");
+    }
   }
 }
 
