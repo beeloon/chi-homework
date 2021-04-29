@@ -1,5 +1,5 @@
 import { STATUS_CODES } from "http";
-import { getIdParamFromUrl } from "../../utils/index.js";
+import { getIdParamFromUrl } from "../../utils";
 
 import { userService } from "./user.service.js";
 

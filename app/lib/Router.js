@@ -1,4 +1,4 @@
-import { formatUrlPathname } from "../utils/index.js";
+import { formatUrlPathname } from "../utils";
 
 class Router {
   constructor() {

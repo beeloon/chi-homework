@@ -1,15 +1,15 @@
-import { config } from "../../lib/config.js";
-import DBFileManager from "../../lib/DBFileManager.js";
+import { config } from "../../config";
+import DBFileManager from "../../lib/DBFileManager";
 
 class User {
-  #DBName = "users";
+  DBName = "users";
 
   constructor() {
-    this.repository = new DBFileManager(config.pathToDBFolder, this.#DBName);
+    this.repository = new DBFileManager(config.pathToDBFolder, this.DBName);
   }
 
-  getDBName() {
-    return this.#DBName;
+  get DBName() {
+    return this.DBName;
   }
 
   async init() {

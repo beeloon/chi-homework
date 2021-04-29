@@ -1,5 +1,5 @@
-import { router } from "./lib/Router.js";
-import * as userController from "./modules/user/user.controller.js";
+import { router } from "./lib/Router";
+import * as userController from "./modules/user/user.controller";
 
 router.post("/user", userController.signupUser);
 

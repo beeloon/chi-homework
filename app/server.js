@@ -1,21 +1,22 @@
 import { createServer } from "http";
 
-import DBFileManager from "./lib/DBFileManager.js";
+import DBFileManager from "./lib/DBFileManager";
 
-import { config } from "./lib/config.js";
-import { user } from "./modules/user/user.model.js";
+import { config } from "./config";
+import { user } from "./modules/user/user.model";
 
-import { router } from "./routing.js";
+import { router } from "./routing";
 
-const hostname = "127.0.0.1";
-const port = 5000;
+const main = async () => {
+  await DBFileManager.init(config.pathToDBFolder, user);
 
-DBFileManager.init(config.pathToDBFolder, user);
+  const server = createServer((req, res) => {
+    router.handleRequest(req, res);
+  });
 
-const server = createServer((req, res) => {
-  router.handleRequest(req, res);
-});
+  server.listen(config.serverPort, () => {
+    console.log(`Server running at http://localhost:${config.serverPort}`);
+  });
+};
 
-server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}`);
-});
+main();
